@@ -1,0 +1,21 @@
+services:
+  # Define o serviço da sua aplicação FastAPI
+  app:
+    # Constrói a imagem a partir do Dockerfile no diretório atual ('.')
+    build: .
+    container_name: api
+    
+    # Comando para iniciar a aplicação com Uvicorn.
+    # --reload: reinicia o servidor automaticamente a cada alteração no código.
+    # --host 0.0.0.0: torna a aplicação acessível de fora do contêiner.
+    command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+    # Mapeia o diretório atual ('.') para o diretório '/app' no contêiner.
+    # Isso é essencial para o desenvolvimento, pois permite:
+    # 1. Que as alterações no seu código sejam refletidas instantaneamente no contêiner (hot-reloading).
+    # 2. Que o arquivo do banco de dados SQLite (escola.db) seja salvo na sua máquina, e não perdido quando o contêiner parar.
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    
